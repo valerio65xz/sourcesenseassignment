@@ -31,11 +31,11 @@ public class NewsService {
         this.nytConverter = nytConverter;
     }
 
-    public List<News> getAggregatedNews(){
+    public List<News> getAggregatedNews(Integer limit, String section){
         Set<News> newsSet = new HashSet<>();
 
-        List<News> hackerNewsList = getNewsFromHackerNews();
-        List<News> nytNewsList = getNewsFromNewYorkTimes();
+        List<News> hackerNewsList = getNewsFromHackerNews(limit);
+        List<News> nytNewsList = getNewsFromNewYorkTimes(section);
 
         newsSet.addAll(hackerNewsList);
         newsSet.addAll(nytNewsList);
@@ -43,17 +43,17 @@ public class NewsService {
         return new ArrayList<>(newsSet);
     }
 
-    public List<News> getNewsFromHackerNews(){
-        List<HackerNewsStory> hackerNewsStories = hackerNewsService.getTopStories();
+    public List<News> getNewsFromHackerNews(Integer limit){
+        List<HackerNewsStory> hackerNewsStories = hackerNewsService.getTopStories(limit);
 
         return hackerNewsStories.stream()
                 .map(hackerNewsConverter::toNews)
                 .collect(Collectors.toList());
     }
 
-    public List<News> getNewsFromNewYorkTimes(){
+    public List<News> getNewsFromNewYorkTimes(String section){
         //TODO: gestire la sezione
-        List<NYTStory> nytStories = nytService.getTopStories("arts");
+        List<NYTStory> nytStories = nytService.getTopStories(section);
 
         return nytStories.stream()
                 .map(nytConverter::toNews)

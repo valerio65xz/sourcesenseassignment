@@ -1,7 +1,5 @@
 package com.sourcesense.assignment.controller;
 
-import com.sourcesense.assignment.exception.ResponseErrorEnum;
-import com.sourcesense.assignment.exception.ResponseException;
 import com.sourcesense.assignment.model.News;
 import com.sourcesense.assignment.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,29 +20,26 @@ public class NewsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<News>> getAggregatedNews(){
-        List<News> newsList = newsService.getAggregatedNews();
+    public ResponseEntity<List<News>> getAggregatedNews(
+            @RequestParam("hackerNewsLimit") Integer limit,
+            @RequestParam("nytSection") String section){
+        List<News> newsList = newsService.getAggregatedNews(limit, section);
         newsService.sortNewsByDate(newsList);
         return ResponseEntity.ok(newsList);
     }
 
-    @GetMapping("{source}")
-    public ResponseEntity<List<News>> getNewsBySource(@PathVariable("source") String source) {
-        List<News> newsList;
+    @GetMapping("hackernews")
+    public ResponseEntity<List<News>> getHackerNewsNews(@RequestParam("limit") Integer limit) {
+        List<News> newsList = newsService.getNewsFromHackerNews(limit);
+        newsService.sortNewsByDate(newsList);
+        return ResponseEntity.ok(newsList);
+    }
 
-        if (source.equals("hackernews")){
-            newsList = newsService.getNewsFromHackerNews();
-            newsService.sortNewsByDate(newsList);
-            return ResponseEntity.ok(newsList);
-        }
-        else if (source.equals("newyorktimes")){
-            newsList = newsService.getNewsFromNewYorkTimes();
-            newsService.sortNewsByDate(newsList);
-            return ResponseEntity.ok(newsList);
-        }
-        else{
-            throw new ResponseException(ResponseErrorEnum.BAD_SOURCE);
-        }
+    @GetMapping("newyorktimes")
+    public ResponseEntity<List<News>> getNewYorkTimesNews(@RequestParam("section") String section) {
+        List<News> newsList = newsService.getNewsFromNewYorkTimes(section);
+        newsService.sortNewsByDate(newsList);
+        return ResponseEntity.ok(newsList);
     }
 
 }

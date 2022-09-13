@@ -18,9 +18,9 @@ public class HackerNewsService {
     }
 
     //TODO: aggiusta limit
-    public List<HackerNewsStory> getTopStories() {
+    public List<HackerNewsStory> getTopStories(Integer limit) {
         return newsMapper.getHackerNewsTopStoriesIds().stream()
-                .limit(5)
+                .limit(limit)
                 .map(newsMapper::getItemFromId)
                 .toList();
     }
