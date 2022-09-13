@@ -44,7 +44,7 @@ public class NewsMapper {
         return parse(nytTopStoriesUrl + section + ".json?api-key=" + nytApiKey, NYTResponse.class);
     }
 
-    private <T> T parse(String url, Class<T> clazz){
+    <T> T parse(String url, Class<T> clazz){
         try {
             return mapper.readValue(new URL(url), clazz);
         } catch (MalformedURLException e) {
