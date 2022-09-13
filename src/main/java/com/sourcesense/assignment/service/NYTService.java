@@ -17,8 +17,8 @@ public class NYTService {
         this.newsMapper = newsMapper;
     }
 
-    public List<NYTStory> getTopStories(String section){
-        return newsMapper.getNytTopStories(section).getResults();
+    public List<NYTStory> getNews(String section){
+        return newsMapper.parseNytTopStories(section).getResults();
     }
 
 }

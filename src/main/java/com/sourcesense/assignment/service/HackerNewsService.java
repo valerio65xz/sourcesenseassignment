@@ -17,11 +17,10 @@ public class HackerNewsService {
         this.newsMapper = newsMapper;
     }
 
-    //TODO: aggiusta limit
-    public List<HackerNewsStory> getTopStories(Integer limit) {
-        return newsMapper.getHackerNewsTopStoriesIds().stream()
+    public List<HackerNewsStory> getNews(Integer limit) {
+        return newsMapper.parseHackerNewsTopStoriesIds().stream()
                 .limit(limit)
-                .map(newsMapper::getItemFromId)
+                .map(newsMapper::parseItemById)
                 .toList();
     }
 

@@ -30,7 +30,7 @@ There are 3 APIs:
 * `GET news-from-hackernews`: Get the news only from HackerNews
 * `GET news-from-newyorktimes`: Get the news only from NewYorkTimes
 
-you have also to define a `limit` for HackerNews and a `section` for New York Times.
+you have also to define a `limit` for the number of news retrieved from HackerNews and a `section` for New York Times' news.
 
 # Docs 📚
 

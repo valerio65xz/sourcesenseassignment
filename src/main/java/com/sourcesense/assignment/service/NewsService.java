@@ -44,7 +44,7 @@ public class NewsService {
     }
 
     public List<News> getNewsFromHackerNews(Integer limit){
-        List<HackerNewsStory> hackerNewsStories = hackerNewsService.getTopStories(limit);
+        List<HackerNewsStory> hackerNewsStories = hackerNewsService.getNews(limit);
 
         return hackerNewsStories.stream()
                 .map(hackerNewsConverter::toNews)
@@ -53,7 +53,7 @@ public class NewsService {
 
     public List<News> getNewsFromNewYorkTimes(String section){
         //TODO: gestire la sezione
-        List<NYTStory> nytStories = nytService.getTopStories(section);
+        List<NYTStory> nytStories = nytService.getNews(section);
 
         return nytStories.stream()
                 .map(nytConverter::toNews)

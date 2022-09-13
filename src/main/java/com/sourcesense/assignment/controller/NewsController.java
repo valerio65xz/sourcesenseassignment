@@ -53,7 +53,7 @@ public class NewsController {
             @ApiResponse(responseCode = "400", description = "Invalid JSON",
                     content = @Content) })
     @GetMapping("hackernews")
-    public ResponseEntity<List<News>> getHackerNewsNews(@Parameter(description = "The limit of news to be retrieved") @RequestParam("limit") Integer limit) {
+    public ResponseEntity<List<News>> getNewsFromHackerNews(@Parameter(description = "The limit of news to be retrieved") @RequestParam("limit") Integer limit) {
         List<News> newsList = newsService.getNewsFromHackerNews(limit);
         newsService.sortNewsByDate(newsList);
         return ResponseEntity.ok(newsList);
@@ -69,7 +69,7 @@ public class NewsController {
             @ApiResponse(responseCode = "400", description = "Invalid JSON",
                     content = @Content) })
     @GetMapping("newyorktimes")
-    public ResponseEntity<List<News>> getNewYorkTimesNews(@Parameter(description = "The New York Times' section where to look for the news") @RequestParam("section") String section) {
+    public ResponseEntity<List<News>> getNewsFromNewYorkTimes(@Parameter(description = "The New York Times' section where to look for the news") @RequestParam("section") String section) {
         List<News> newsList = newsService.getNewsFromNewYorkTimes(section);
         newsService.sortNewsByDate(newsList);
         return ResponseEntity.ok(newsList);

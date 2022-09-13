@@ -32,15 +32,15 @@ public class NewsMapper {
         mapper.registerModule(new JavaTimeModule());
     }
 
-    public List<Integer> getHackerNewsTopStoriesIds() {
+    public List<Integer> parseHackerNewsTopStoriesIds() {
         return parse(hackerNewsTopStoriesUrl, List.class);
     }
 
-    public HackerNewsStory getItemFromId(Integer id) {
+    public HackerNewsStory parseItemById(Integer id) {
         return parse(hackerNewsItemUrl + id + ".json", HackerNewsStory.class);
     }
 
-    public NYTResponse getNytTopStories(String section){
+    public NYTResponse parseNytTopStories(String section){
         return parse(nytTopStoriesUrl + section + ".json?api-key=" + nytApiKey, NYTResponse.class);
     }
 
