@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "e8ef8b67-9833-4a09-aaad-cb9e09a09a8a",
+		"name": "SourcesenseAssignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3460591"
+	},
+	"item": [
+		{
+			"name": "news",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/news?hackerNewsLimit=10&nytSection=arts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"news"
+					],
+					"query": [
+						{
+							"key": "hackerNewsLimit",
+							"value": "10"
+						},
+						{
+							"key": "nytSection",
+							"value": "arts"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "news-from-hackernews",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/news/hackernews?limit=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"news",
+						"hackernews"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "news-from-newyorktimes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/news/newyorktimes?section=arts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"news",
+						"newyorktimes"
+					],
+					"query": [
+						{
+							"key": "section",
+							"value": "arts"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
