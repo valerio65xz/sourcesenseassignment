@@ -2,24 +2,19 @@ package com.sourcesense.assignment.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sourcesense.assignment.BaseUnitTest;
-import com.sourcesense.assignment.model.News;
+import com.sourcesense.assignment.exception.ResponseErrorEnum;
+import com.sourcesense.assignment.exception.ResponseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -28,30 +23,50 @@ class NewsMapperTest extends BaseUnitTest {
     @Mock
     private ObjectMapper objectMapper;
 
-    @Spy
-    private NewsMapper newsMapper;
+    private final NewsMapper newsMapper = new NewsMapper();
 
-    @Test
-    void parseHackerNewsTopStoriesIds() {
-        List<Integer> news =  IntStream.range(1, 10).boxed().toList();
+    private String url;
 
-        doReturn(news).when(newsMapper).parse(any(), any());
+    private String parsed;
 
-        List<Integer> result = newsMapper.parseHackerNewsTopStoriesIds();
-
-        verify(newsMapper).parse(eq(null), eq(List.class));
-
-        assertThat(result)
-                .isNotNull()
-                .usingRecursiveComparison()
-                .isEqualTo(news);
+    @BeforeEach
+    void setUp(){
+        url = "http://en.wikipedia.org";
+        parsed = "parsed";
+        ReflectionTestUtils.setField(newsMapper, "mapper", objectMapper);
     }
 
     @Test
-    void parseItemById() {
+    void parse_success() throws IOException {
+        when(objectMapper.readValue(any(URL.class), eq(String.class))).thenReturn(parsed);
+
+        String result = newsMapper.parse(url, String.class);
+
+        verify(objectMapper).readValue(eq(new URL(url)), eq(String.class));
+
+        assertThat(result).isEqualTo(parsed);
     }
 
     @Test
-    void parseNytTopStories() {
+    void parse_failForMalformedUrlException() throws IOException {
+        when(objectMapper.readValue(any(URL.class), eq(String.class))).thenThrow(MalformedURLException.class);
+
+        assertThatExceptionOfType(ResponseException.class)
+                .isThrownBy(() -> newsMapper.parse(url, String.class))
+                .matches(e -> e.getError().equals(ResponseErrorEnum.BAD_REQUEST));
+
+        verify(objectMapper).readValue(eq(new URL(url)), eq(String.class));
     }
+
+    @Test
+    void parse_failForIOException() throws IOException {
+        when(objectMapper.readValue(any(URL.class), eq(String.class))).thenThrow(IOException.class);
+
+        assertThatExceptionOfType(ResponseException.class)
+                .isThrownBy(() -> newsMapper.parse(url, String.class))
+                .matches(e -> e.getError().equals(ResponseErrorEnum.BAD_JSON));
+
+        verify(objectMapper).readValue(eq(new URL(url)), eq(String.class));
+    }
+
 }

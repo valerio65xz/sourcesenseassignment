@@ -52,7 +52,6 @@ public class NewsService {
     }
 
     public List<News> getNewsFromNewYorkTimes(String section){
-        //TODO: gestire la sezione
         List<NYTStory> nytStories = nytService.getNews(section);
 
         return nytStories.stream()
