@@ -20,9 +20,9 @@ public class NewsMapper {
         mapper.registerModule(new JavaTimeModule());
     }
 
-    public <T> T parse(String url, Class<T> clazz){
+    public <T> T parse(String URL, Class<T> clazz){
         try {
-            return mapper.readValue(new URL(url), clazz);
+            return mapper.readValue(new URL(URL), clazz);
         } catch (MalformedURLException e) {
             throw new ResponseException(ResponseErrorEnum.BAD_REQUEST);
         } catch (IOException e) {
