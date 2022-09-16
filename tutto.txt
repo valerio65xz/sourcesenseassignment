@@ -1,0 +1,7 @@
+COSA HO USATO DI PARTICOLARE:
+	- Mock diretto attributi dell'oggetto
+	- Annotation arser jackson che ti evita degli attributi da considerare
+
+COSA DOVEVO AGGIUSTARE_
+	- ordinamento non da fare nel controller
+	- validazione assente
